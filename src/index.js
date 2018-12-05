@@ -1,3 +1,3 @@
-import todoItem from './components/todo-item';
-import todoList from './components/todo-list';
-import app from './app';
+import './components/todo-item';
+import './components/todo-list';
+import './app';

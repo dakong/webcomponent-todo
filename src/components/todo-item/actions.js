@@ -1,0 +1,5 @@
+export const TODO_ITEM_DELETE = 'TODO_ITEM/DELETE';
+export const TODO_ITEM_CHECK = 'TODO_ITEM/CHECK';
+export const TODO_ITEM_ADD = 'TODO_ITEM/ADD';
+export const TODO_ITEM_EDIT = 'TODO_ITEM/EDIT';
+export const TODO_ITEM_NEW_LINE = 'TODO_ITEM/NEW_LINE';

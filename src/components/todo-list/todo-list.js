@@ -1,7 +1,7 @@
 import markupTemplate from './template';
 import { findChildEl, findEl } from '../../utils/dom';
 
-class TodoList extends HTMLElement {
+export default class TodoList extends HTMLElement {
     constructor() {
         super();
 

@@ -1,9 +1,13 @@
 import { findChildEl, findEl } from './utils/dom';
 import { todoItems } from './data';
-import { TODO } from './constants/actions';
-
+import {
+    TODO_ITEM_DELETE,
+    TODO_ITEM_CHECK,
+    TODO_ITEM_ADD,
+    TODO_ITEM_EDIT,
+    TODO_ITEM_NEW_LINE,
+ } from './components/todo-item/actions';
 import { openIDB, getAllTodos, addTodo, deleteTodo, updateTodo } from './db';
-
 const uuidv4 = require('uuid/v4');
 
 /**
@@ -82,7 +86,7 @@ const createTodoItem = () => {
     return todoItem;
 }
 
-$todoList.addEventListener(TODO.ADD, (e) => {
+$todoList.addEventListener(TODO_ITEM_ADD , (e) => {
     const { uuid, value } = e.detail;
 
     // store in database here
@@ -95,7 +99,7 @@ $todoList.addEventListener(TODO.ADD, (e) => {
     $todoList.append(createNewTodoItem());
 });
 
-$todoBody.addEventListener(TODO.CHECK, e => {
+$todoBody.addEventListener(TODO_ITEM_CHECK, e => {
     const { uuid, checked } = e.detail;
     const payload = {
         uuid,
@@ -117,7 +121,7 @@ $todoBody.addEventListener(TODO.CHECK, e => {
     }
 });
 
-$todoList.addEventListener(TODO.EDIT, e => {
+$todoList.addEventListener(TODO_ITEM_EDIT, e => {
     const { uuid, value } = e.detail;
     const payload = {
         uuid,
@@ -127,7 +131,7 @@ $todoList.addEventListener(TODO.EDIT, e => {
     updateTodo(payload, displayError);
 });
 
-// $completedList.addEventListener(TODO.CHECK, e => {
+// $completedList.addEventListener(TODO_ITEM_CHECK, e => {
 //     const { uuid, checked } = e.detail;
 //     const payload = {
 //         uuid,
@@ -145,7 +149,7 @@ $todoList.addEventListener(TODO.EDIT, e => {
 //     }
 // });
 
-$todoList.addEventListener(TODO.NEW_LINE, (e) => {
+$todoList.addEventListener(TODO_ITEM_NEW_LINE, (e) => {
     const { uuid } = e.detail;
     const prevSlot = findChildEl($todoList, 'uuid', uuid);
     if (prevSlot) {
@@ -155,7 +159,7 @@ $todoList.addEventListener(TODO.NEW_LINE, (e) => {
     }
 });
 
-$todoBody.addEventListener(TODO.DELETE, (e) => {
+$todoBody.addEventListener(TODO_ITEM_DELETE, (e) => {
     const { uuid } = e.detail;
     deleteTodo(uuid, displayError);
 });

@@ -1,6 +1,13 @@
 import { KEY_CODES, INVALID } from '../../constants/key-codes';
 import templateMarkup from './template'
-import { TODO } from '../../constants/actions';
+import {
+    TODO_ITEM_DELETE,
+    TODO_ITEM_CHECK,
+    TODO_ITEM_ADD,
+    TODO_ITEM_EDIT,
+    TODO_ITEM_NEW_LINE,
+} from './actions';
+
 const uuidv4 = require('uuid/v4');
 
 export default class TodoItem extends HTMLElement {
@@ -88,7 +95,7 @@ export default class TodoItem extends HTMLElement {
     }
 
     _onDelete() {
-        this.dispatchEvent(new CustomEvent(TODO.DELETE, {
+        this.dispatchEvent(new CustomEvent(TODO_ITEM_DELETE, {
             detail: {
                 uuid: this.uuid
             },
@@ -102,7 +109,7 @@ export default class TodoItem extends HTMLElement {
 
     _onCheckboxClick() {
         this.checked = !this.checked;
-        this.dispatchEvent(new CustomEvent(TODO.CHECK, {
+        this.dispatchEvent(new CustomEvent(TODO_ITEM_CHECK, {
             detail: {
                 uuid: this.uuid,
                 checked: this.checked,
@@ -123,7 +130,7 @@ export default class TodoItem extends HTMLElement {
             this.uuid = uuidv4();
         }
 
-        this.dispatchEvent(new CustomEvent(TODO.ADD, {
+        this.dispatchEvent(new CustomEvent(TODO_ITEM_ADD, {
             detail: {
                 uuid: this.uuid,
                 value: this.value
@@ -135,7 +142,7 @@ export default class TodoItem extends HTMLElement {
     }
 
     _onEditItem(value) {
-        this.dispatchEvent(new CustomEvent(TODO.EDIT, {
+        this.dispatchEvent(new CustomEvent(TODO_ITEM_EDIT, {
             detail: {
                 value,
                 uuid: this.uuid,
@@ -147,7 +154,7 @@ export default class TodoItem extends HTMLElement {
     }
 
     _createNewLine() {
-        this.dispatchEvent(new CustomEvent(TODO.NEW_LINE, {
+        this.dispatchEvent(new CustomEvent(TODO_ITEM_NEW_LINE, {
             detail: {
                 uuid: this.uuid,
             },
