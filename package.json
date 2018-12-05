@@ -17,6 +17,6 @@
     "bundle": "webpack --config webpack.config.js",
     "start:dev": "webpack-dev-server --open"
   },
-  "author": "",
+  "author": "Daniel Kong",
   "license": "ISC"
 }
