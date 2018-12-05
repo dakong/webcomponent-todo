@@ -1,0 +1,7 @@
+export const TODO = {
+    DELETE: 'TODO_ITEM/DELETE',
+    CHECK: 'TODO_ITEM/CHECK',
+    ADD: 'TODO_ITEM/ADD',
+    EDIT: 'TODO_ITEM/EDIT',
+    NEW_LINE: 'TODO_ITEM/NEW_LINE',
+};
