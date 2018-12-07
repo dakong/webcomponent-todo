@@ -103,8 +103,6 @@ export default class TodoItem extends HTMLElement {
             cancelable: true,
             composed: true,
         }));
-
-        this.remove();
     }
 
     _onCheckboxClick() {

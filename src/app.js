@@ -1,5 +1,4 @@
 import { findChildEl, findEl } from './utils/dom';
-import { todoItems } from './data';
 import {
     TODO_ITEM_DELETE,
     TODO_ITEM_CHECK,
@@ -14,17 +13,10 @@ const uuidv4 = require('uuid/v4');
  * TODOS:
  * 1) Clean up code
  * 2) A way to order objects
- * 3) Handle errors
  */
 const $todoBody = document.getElementById('todo-body');
-const $todoList = document.querySelector('todo-list[type="todo"]');
-const $completedList = document.querySelector('todo-list[type="completed"]');
+const $todoList = document.querySelector('todo-list');
 const $errorBanner = document.getElementById('error-banner');
-
-const initializeDone = (todoItem) => {
-    todoItem.setAttribute('checked', '');
-    $completedList.appendChild(todoItem);
-};
 
 const displayError = () => {
     $errorBanner.style.display = 'block';
@@ -33,19 +25,24 @@ const displayError = () => {
     }, 5000)
 }
 
-const initializeTodo = (todoItem) => $todoList.appendChild(todoItem);
-
 const initializeList = (todoItems) => {
-    if (!$todoList || !$todoBody || !$completedList) return
+    if (!$todoList || !$todoBody) return
     todoItems.forEach((item) => {
         const { value, uuid, done } = item;
         const todoItem = document.createElement('todo-item');
 
         todoItem.setAttribute('value', value);
         todoItem.setAttribute('uuid', uuid);
-        todoItem.setAttribute('slot', 'item');
 
-        (done) ? initializeDone(todoItem) : initializeTodo(todoItem);
+        if (done) {
+            todoItem.setAttribute('slot', 'completed-item');
+            todoItem.setAttribute('checked', '');
+        }
+        else
+            todoItem.setAttribute('slot', 'todo-item');
+
+        $todoList.append(todoItem);
+
     });
 
     $todoList.appendChild(createNewTodoItem());
@@ -67,7 +64,7 @@ async function initDB() {
 const createNewTodoItem = () => {
     const newTodoItem = document.createElement('todo-item');
     newTodoItem.setAttribute('state', 'new');
-    newTodoItem.setAttribute('slot', 'item');
+    newTodoItem.setAttribute('slot', 'todo-item');
 
     return newTodoItem;
 }
@@ -76,7 +73,7 @@ const createTodoItem = () => {
     const todoItem = document.createElement('todo-item');
     const uuid = uuidv4();
     todoItem.setAttribute('uuid', uuid);
-    todoItem.setAttribute('slot', 'item');
+    todoItem.setAttribute('slot', 'todo-item');
 
     addTodo({
         uuid,
@@ -108,17 +105,9 @@ $todoBody.addEventListener(TODO_ITEM_CHECK, e => {
     };
 
     updateTodo(payload, displayError);
+    const $child = findChildEl($todoList, 'uuid', uuid);
 
-    if (checked) {
-        const $child = findChildEl($todoList, 'uuid', uuid);
-        $todoList.removeChild($child);
-        $completedList.appendChild($child);
-    } else {
-        const $child = findChildEl($completedList, 'uuid', uuid);
-        const $newTodoItem = findChildEl($todoList, 'state', 'new');
-        $completedList.removeChild($child);
-        $todoList.insertBefore($child, $newTodoItem);
-    }
+    (checked) ? $child.setAttribute('slot', 'completed-item') : $child.setAttribute('slot', 'todo-item');
 });
 
 $todoList.addEventListener(TODO_ITEM_EDIT, e => {
@@ -130,24 +119,6 @@ $todoList.addEventListener(TODO_ITEM_EDIT, e => {
     };
     updateTodo(payload, displayError);
 });
-
-// $completedList.addEventListener(TODO_ITEM_CHECK, e => {
-//     const { uuid, checked } = e.detail;
-//     const payload = {
-//         uuid,
-//         column: 'done',
-//         value: checked,
-//     }
-//     updateTodo(payload, displayError);
-
-//     if (!checked) {
-//         const $child = findChildEl($completedList, 'uuid', uuid);
-//         const $newTodoItem = findChildEl($todoList, 'state', 'new');
-
-//         $completedList.removeChild($child);
-//         $todoList.insertBefore($child, $newTodoItem);
-//     }
-// });
 
 $todoList.addEventListener(TODO_ITEM_NEW_LINE, (e) => {
     const { uuid } = e.detail;
@@ -162,6 +133,8 @@ $todoList.addEventListener(TODO_ITEM_NEW_LINE, (e) => {
 $todoBody.addEventListener(TODO_ITEM_DELETE, (e) => {
     const { uuid } = e.detail;
     deleteTodo(uuid, displayError);
+    const $child = findChildEl($todoList, 'uuid', uuid);
+    $todoList.removeChild($child);
 });
 
 initDB();

@@ -20,13 +20,13 @@ export default class TodoList extends HTMLElement {
 
     connectedCallback() {
         const header = this.shadowRoot.getElementById('header');
-        const slotItem = this.shadowRoot.querySelector('slot[name=item]');
+        const completedSlotItem = this.shadowRoot.querySelector('slot[name=completed-item]');
         const newTodoItem = this.shadowRoot.querySelector('todo-item[state=new]');
         const list = this.shadowRoot.getElementById('list');
 
         if (!this.hideHeader) {
             this._setListCount();
-            slotItem.addEventListener('slotchange', e => {
+            completedSlotItem.addEventListener('slotchange', e => {
                 this._setListCount();
             });
         }
@@ -34,7 +34,7 @@ export default class TodoList extends HTMLElement {
     }
 
     _setListCount() {
-        const count = this.querySelectorAll('[slot=item]').length;
+        const count = this.querySelectorAll('[slot=completed-item]').length;
         const countEl = this.shadowRoot.getElementById('count');
 
         if (!count && !this.hidden) {

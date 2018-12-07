@@ -47,7 +47,7 @@ const styles = `
         transform: rotate(-90deg);
     }
 
-    :host([collapsed]) #list {
+    :host([collapsed]) #completed-list {
         display: none;
     }
 
