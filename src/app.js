@@ -9,13 +9,9 @@ import {
 import { openIDB, getAllTodos, addTodo, deleteTodo, updateTodo } from './db';
 const uuidv4 = require('uuid/v4');
 
-/**
- * TODOS:
- * 1) Clean up code
- * 2) A way to order objects
- */
 const $todoBody = document.getElementById('todo-body');
 const $todoList = document.querySelector('todo-list');
+const $loader = document.querySelector('todo-loader');
 const $errorBanner = document.getElementById('error-banner');
 
 const displayError = () => {
@@ -48,12 +44,23 @@ const initializeList = (todoItems) => {
     $todoList.appendChild(createNewTodoItem());
 }
 
+const startLoading = () => {
+    $todoList.style.display = 'none';
+    $loader.setAttribute('loading', '');
+}
+
+const finishLoading = () => {
+    $todoList.style.display = 'block';
+    $loader.removeAttribute('loading');
+}
+
 async function initDB() {
+    startLoading();
     try {
         await openIDB();
         const todos = await getAllTodos();
         todos.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
-
+        finishLoading();
         initializeList(todos);
     }
     catch(e) {
@@ -64,6 +71,7 @@ async function initDB() {
 const createNewTodoItem = () => {
     const newTodoItem = document.createElement('todo-item');
     newTodoItem.setAttribute('state', 'new');
+    newTodoItem.setAttribute('placeholder', 'List item');
     newTodoItem.setAttribute('slot', 'todo-item');
 
     return newTodoItem;

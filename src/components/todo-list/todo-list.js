@@ -21,8 +21,6 @@ export default class TodoList extends HTMLElement {
     connectedCallback() {
         const header = this.shadowRoot.getElementById('header');
         const completedSlotItem = this.shadowRoot.querySelector('slot[name=completed-item]');
-        const newTodoItem = this.shadowRoot.querySelector('todo-item[state=new]');
-        const list = this.shadowRoot.getElementById('list');
 
         if (!this.hideHeader) {
             this._setListCount();
@@ -37,11 +35,11 @@ export default class TodoList extends HTMLElement {
         const count = this.querySelectorAll('[slot=completed-item]').length;
         const countEl = this.shadowRoot.getElementById('count');
 
-        if (!count && !this.hidden) {
-            this.hidden = true;
-        } else if (count && this.hidden) {
-            this.hidden = false;
-        }
+        // if (!count && !this.hidden) {
+        //     this.hidden = true;
+        // } else if (count && this.hidden) {
+        //     this.hidden = false;
+        // }
 
         countEl.innerHTML = count;
     }

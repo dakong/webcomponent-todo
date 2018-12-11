@@ -56,6 +56,10 @@ export default class TodoItem extends HTMLElement {
             inputEl.focus();
         }
 
+        if (this.placeholder) {
+            inputEl.setAttribute('placeholder', this.placeholder);
+        }
+
         this.setAttribute('uuid', this.uuid);
         this.setAttribute('aria-checked', this.checked);
 
@@ -188,6 +192,14 @@ export default class TodoItem extends HTMLElement {
 
     _onMouseLeave() {
         this.hover = false;
+    }
+
+    get placeholder() {
+        return this.getAttribute('placeholder') || '';
+    }
+
+    set placeholder(val) {
+        return this.setAttribute('placeholder', val);
     }
 
     get uuid() {
